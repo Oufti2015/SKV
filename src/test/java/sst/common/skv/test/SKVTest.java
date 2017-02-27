@@ -1,11 +1,16 @@
 package sst.common.skv.test;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import sst.common.skv.Bucket;
 import sst.common.skv.Context;
+import sst.common.skv.KeyValue;
 import sst.common.skv.SimpleKeyValue;
+import sst.common.skv.persistence.JSonFilePersistenceProfile;
 
 public class SKVTest {
 
@@ -16,79 +21,117 @@ public class SKVTest {
 
     @Test
     public void firstTest() {
-	SimpleKeyValue skv = SimpleKeyValue.me();
+	SimpleKeyValue skv = KeyValue.me();
 	Assert.assertNotNull(skv);
     }
 
     @Test
     public void createContext() {
-	SimpleKeyValue skv = SimpleKeyValue.me();
-	Context context = skv.createContext(FIRST_CONTEXT);
+	SimpleKeyValue skv = KeyValue.me();
+	Context context = skv.context(FIRST_CONTEXT);
 	Assert.assertNotNull(context);
     }
 
     @Test
     public void getBucket() {
-	SimpleKeyValue skv = SimpleKeyValue.me();
-	Context context = skv.createContext(FIRST_CONTEXT);
-	Bucket bucket = skv.getBucket(context);
+	SimpleKeyValue skv = KeyValue.me();
+	Context context = skv.context(FIRST_CONTEXT);
+	Bucket bucket = skv.bucket(context);
 	Assert.assertNotNull(bucket);
     }
 
     @Test
     public void newEntry() {
-	SimpleKeyValue skv = SimpleKeyValue.me();
-	Context context = skv.createContext(FIRST_CONTEXT);
-	Bucket bucket = skv.getBucket(context);
-	bucket.addEntry(KEY1, VALUE1);
+	SimpleKeyValue skv = KeyValue.me();
+	Context context = skv.context(FIRST_CONTEXT);
+	Bucket bucket = skv.bucket(context);
+	bucket.newEntry(KEY1, VALUE1);
 
-	Assert.assertNotNull(bucket.getEntry(KEY1));
-	Assert.assertEquals("Value retrieved is not correct !", VALUE1, bucket.getEntry(KEY1).value());
+	Assert.assertNotNull(bucket.entry(KEY1));
+	Assert.assertEquals("Value retrieved is not correct !", VALUE1, bucket.entry(KEY1).value());
     }
 
     @Test
     public void getEntry() {
-	SimpleKeyValue skv = SimpleKeyValue.me();
-	Context context = skv.createContext(FIRST_CONTEXT);
-	Bucket bucket = skv.getBucket(context);
-	Assert.assertNull(bucket.getEntry(KEY1));
+	SimpleKeyValue skv = KeyValue.me();
+	Context context = skv.context(FIRST_CONTEXT);
+	Bucket bucket = skv.bucket(context);
+	Assert.assertNull(bucket.entry(KEY1));
     }
 
     @Test
     public void getEntry2() {
-	SimpleKeyValue skv = SimpleKeyValue.me();
-	Bucket bucket = skv.getBucket(FIRST_CONTEXT);
+	SimpleKeyValue skv = KeyValue.me();
+	Bucket bucket = skv.bucket(FIRST_CONTEXT);
 	Assert.assertNull(bucket);
     }
 
     @Test
     public void newBucket() {
-	SimpleKeyValue skv = SimpleKeyValue.me();
-	Context context = skv.createContext(FIRST_CONTEXT);
-	Bucket bucket = skv.getBucket(context);
+	SimpleKeyValue skv = KeyValue.me();
+	Context context = skv.context(FIRST_CONTEXT);
+	Bucket bucket = skv.bucket(context);
 
-	Bucket bucket2 = bucket.createBucket(BUCKET22);
-	bucket2.addEntry(KEY1, VALUE1);
+	Bucket bucket2 = bucket.newBucket(BUCKET22);
+	bucket2.newEntry(KEY1, VALUE1);
 
-	Assert.assertNull(bucket.getEntry(KEY1));
-	Assert.assertNotNull(bucket2.getEntry(KEY1));
-	Assert.assertEquals("Value retrieved is not correct !", VALUE1, bucket2.getEntry(KEY1).value());
+	Assert.assertNull(bucket.entry(KEY1));
+	Assert.assertNotNull(bucket2.entry(KEY1));
+	Assert.assertEquals("Value retrieved is not correct !", VALUE1, bucket2.entry(KEY1).value());
     }
 
     @Test
     public void getNewBucket() {
-	SimpleKeyValue skv = SimpleKeyValue.me();
-	Context context = skv.createContext(FIRST_CONTEXT);
-	Bucket bucket = skv.getBucket(context);
+	SimpleKeyValue skv = KeyValue.me();
+	Context context = skv.context(FIRST_CONTEXT);
+	Bucket bucket = skv.bucket(context);
 
-	Bucket bucket2 = bucket.createBucket(BUCKET22);
-	bucket2.addEntry(KEY1, VALUE1);
+	Bucket bucket2 = bucket.newBucket(BUCKET22);
+	bucket2.newEntry(KEY1, VALUE1);
 
-	Bucket bucket2Prim = bucket.getBucket(BUCKET22);
+	Bucket bucket2Prim = bucket.bucket(BUCKET22);
 
 	Assert.assertNotNull(bucket2Prim);
 	Assert.assertEquals(bucket2, bucket2Prim);
-	Assert.assertNotNull(bucket2Prim.getEntry(KEY1));
-	Assert.assertEquals("Value retrieved is not correct !", VALUE1, bucket2Prim.getEntry(KEY1).value());
+	Assert.assertNotNull(bucket2Prim.entry(KEY1));
+	Assert.assertEquals("Value retrieved is not correct !", VALUE1, bucket2Prim.entry(KEY1).value());
+    }
+
+    @Test
+    public void save() {
+	String prefix = "foobar";
+	String suffix = ".tmp";
+
+	// this temporary file remains after the jvm exits
+	try {
+	    File tempFile = File.createTempFile(prefix, suffix);
+	    // tempFile.deleteOnExit();
+
+	    SimpleKeyValue skv = KeyValue.me();
+	    Context context = skv.context(FIRST_CONTEXT);
+	    Bucket bucket = skv.bucket(context);
+
+	    Bucket bucket2 = bucket.newBucket(BUCKET22);
+	    bucket2.newEntry(KEY1, VALUE1);
+
+	    Bucket bucket2Prim = bucket.bucket(BUCKET22);
+
+	    Assert.assertNotNull(bucket2Prim);
+	    Assert.assertEquals(bucket2, bucket2Prim);
+	    Assert.assertNotNull(bucket2Prim.entry(KEY1));
+	    Assert.assertEquals("Value retrieved is not correct !", VALUE1, bucket2Prim.entry(KEY1).value());
+
+	    skv.addPersistenceProfile(new JSonFilePersistenceProfile());
+
+	    skv.save(tempFile);
+
+	    System.out.println("Temp File = [" + tempFile.getAbsolutePath() + "] length = <" + tempFile.length() + ">");
+
+	    Assert.assertTrue(tempFile.exists());
+	    Assert.assertNotEquals(2, tempFile.length());
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+
     }
 }

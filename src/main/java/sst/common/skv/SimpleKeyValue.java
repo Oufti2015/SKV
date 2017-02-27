@@ -1,36 +1,15 @@
 package sst.common.skv;
 
-import java.util.HashMap;
-import java.util.Map;
+import sst.common.skv.persistence.Persistable;
+import sst.common.skv.persistence.PersistenceProfile;
 
-public class SimpleKeyValue {
+public interface SimpleKeyValue extends Persistable {
 
-    private static SimpleKeyValue instance = null;
+    public Bucket bucket(Context context);
 
-    public static SimpleKeyValue me() {
-	return instance;
-    }
+    public Bucket bucket(String context);
 
-    static {
-	instance = new SimpleKeyValue();
-    }
+    public Context context(String contextId);
 
-    private SimpleKeyValue() {
-    }
-
-    private Map<Context, Bucket> maps = new HashMap<>();
-
-    public Bucket getBucket(Context context) {
-	return maps.get(context);
-    }
-
-    public Bucket getBucket(String context) {
-	return maps.get(new ContextImplementation().id(context));
-    }
-
-    public Context createContext(String contextId) {
-	Context context = new ContextImplementation().id(contextId);
-	maps.put(context, new BucketImplementation().id("MAINBUCKET"));
-	return context;
-    }
+    public void addPersistenceProfile(PersistenceProfile profile);
 }

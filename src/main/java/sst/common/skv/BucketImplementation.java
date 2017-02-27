@@ -13,24 +13,24 @@ public class BucketImplementation implements Bucket {
     }
 
     @Override
-    public Bucket getBucket(String bucketId) {
+    public Bucket bucket(String bucketId) {
 	return buckets.get(bucketId);
     }
 
     @Override
-    public Entry getEntry(String key) {
+    public Entry entry(String key) {
 	return entries.get(key);
     }
 
     @Override
-    public Bucket createBucket(String bucketId) {
+    public Bucket newBucket(String bucketId) {
 	Bucket bucket = new BucketImplementation().id(bucketId);
-	buckets.put(bucket.getId(), bucket);
+	buckets.put(bucket.id(), bucket);
 	return bucket;
     }
 
     @Override
-    public Entry addEntry(String key, String value) {
+    public Entry newEntry(String key, String value) {
 	Entry entry = new EntryImplementation().key(key).value(value);
 	entries.put(entry.key(), entry);
 	return entry;
@@ -43,7 +43,7 @@ public class BucketImplementation implements Bucket {
     }
 
     @Override
-    public String getId() {
+    public String id() {
 	return id;
     }
 }

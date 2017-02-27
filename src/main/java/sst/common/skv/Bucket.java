@@ -4,13 +4,13 @@ public interface Bucket {
 
     public Bucket id(String bucketId);
 
-    public String getId();
+    public String id();
 
-    public Bucket getBucket(String bucketId);
+    public Bucket bucket(String bucketId);
 
-    public Entry getEntry(String key);
+    public Entry entry(String key);
 
-    public Bucket createBucket(String bucketId);
+    public Bucket newBucket(String bucketId);
 
-    public Entry addEntry(String key, String value);
+    public Entry newEntry(String key, String value);
 }

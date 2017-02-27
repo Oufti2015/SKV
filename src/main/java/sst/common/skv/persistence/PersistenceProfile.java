@@ -1,12 +1,15 @@
 package sst.common.skv.persistence;
 
-public interface PersistenceProfile {
+import sst.common.skv.Bucket;
 
-    public String transformToString();
+public interface PersistenceProfile extends Persistable {
 
-    public void fromString(String buffer);
+    public Bucket bucket();
 
-    public void load();
+    public void initBucket(Bucket bucket);
 
-    public void save();
+    public String string();
+
+    public void createFromString(String buffer);
+
 }
