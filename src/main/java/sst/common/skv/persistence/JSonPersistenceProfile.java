@@ -9,13 +9,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import sst.common.skv.Bucket;
 
 public class JSonPersistenceProfile implements PersistenceProfile {
-    private Bucket bucket = null;
+    private Root root = null;
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public String string() {
 	try {
-	    return objectMapper.writeValueAsString(bucket);
+	    return objectMapper.writeValueAsString(root);
 	} catch (JsonProcessingException e) {
 	    e.printStackTrace();
 	}
@@ -23,13 +23,13 @@ public class JSonPersistenceProfile implements PersistenceProfile {
     }
 
     @Override
-    public Bucket bucket() {
-	return bucket;
+    public Root root() {
+	return root;
     }
 
     @Override
-    public void initBucket(Bucket bucket) {
-	this.bucket = bucket;
+    public void initRoot(Root bucket) {
+	this.root = bucket;
     }
 
     @Override

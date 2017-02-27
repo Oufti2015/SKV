@@ -1,12 +1,10 @@
 package sst.common.skv.persistence;
 
-import sst.common.skv.Bucket;
-
 public interface PersistenceProfile extends Persistable {
 
-    public Bucket bucket();
+    public Root root();
 
-    public void initBucket(Bucket bucket);
+    public void initRoot(Root bucket);
 
     public String string();
 
