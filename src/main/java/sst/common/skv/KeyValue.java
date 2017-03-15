@@ -14,17 +14,7 @@ import sst.common.skv.persistence.Root;
 @JsonSerialize
 public class KeyValue implements Root, SimpleKeyValue {
 
-    private static KeyValue instance = null;
-
-    public static KeyValue me() {
-	return instance;
-    }
-
-    static {
-	instance = new KeyValue();
-    }
-
-    private KeyValue() {
+    public KeyValue() {
     }
 
     protected Map<Context, Bucket> maps = new HashMap<>();

@@ -15,27 +15,29 @@ import sst.textfile.OutputTextFileImpl;
 
 public class SKVTest {
 
-    private static final String BUCKET22 = "BUCKET2";
+    private static final String BUCKET22 = "OWNER";
     private static final String FIRST_CONTEXT = "FIRST";
-    private static final String VALUE1 = "VALUE1";
-    private static final String KEY1 = "KEY1";
+    private static final String VALUE1 = "Stéphane";
+    private static final String KEY1 = "firstname";
+    private static final String VALUE2 = "Stiennon";
+    private static final String KEY2 = "name";
 
     @Test
     public void firstTest() {
-	SimpleKeyValue skv = KeyValue.me();
+	SimpleKeyValue skv = new KeyValue();
 	Assert.assertNotNull(skv);
     }
 
     @Test
     public void createContext() {
-	SimpleKeyValue skv = KeyValue.me();
+	SimpleKeyValue skv = new KeyValue();
 	Context context = skv.context(FIRST_CONTEXT);
 	Assert.assertNotNull(context);
     }
 
     @Test
     public void getBucket() {
-	SimpleKeyValue skv = KeyValue.me();
+	SimpleKeyValue skv = new KeyValue();
 	Context context = skv.context(FIRST_CONTEXT);
 	Bucket bucket = skv.bucket(context);
 	Assert.assertNotNull(bucket);
@@ -43,7 +45,7 @@ public class SKVTest {
 
     @Test
     public void newEntry() {
-	SimpleKeyValue skv = KeyValue.me();
+	SimpleKeyValue skv = new KeyValue();
 	Context context = skv.context(FIRST_CONTEXT);
 	Bucket bucket = skv.bucket(context);
 	bucket.newEntry(KEY1, VALUE1);
@@ -54,7 +56,7 @@ public class SKVTest {
 
     @Test
     public void getEntry() {
-	SimpleKeyValue skv = KeyValue.me();
+	SimpleKeyValue skv = new KeyValue();
 	Context context = skv.context(FIRST_CONTEXT);
 	Bucket bucket = skv.bucket(context);
 	Assert.assertNull(bucket.entry(KEY1));
@@ -62,14 +64,14 @@ public class SKVTest {
 
     @Test
     public void getEntry2() {
-	SimpleKeyValue skv = KeyValue.me();
+	SimpleKeyValue skv = new KeyValue();
 	Bucket bucket = skv.bucket(FIRST_CONTEXT);
 	Assert.assertNull(bucket);
     }
 
     @Test
     public void newBucket() {
-	SimpleKeyValue skv = KeyValue.me();
+	SimpleKeyValue skv = new KeyValue();
 	Context context = skv.context(FIRST_CONTEXT);
 	Bucket bucket = skv.bucket(context);
 
@@ -83,7 +85,7 @@ public class SKVTest {
 
     @Test
     public void getNewBucket() {
-	SimpleKeyValue skv = KeyValue.me();
+	SimpleKeyValue skv = new KeyValue();
 	Context context = skv.context(FIRST_CONTEXT);
 	Bucket bucket = skv.bucket(context);
 
@@ -108,12 +110,15 @@ public class SKVTest {
 	    File tempFile = File.createTempFile(prefix, suffix);
 	    // tempFile.deleteOnExit();
 
-	    SimpleKeyValue skv = KeyValue.me();
+	    SimpleKeyValue skv = new KeyValue();
+
 	    Context context = skv.context(FIRST_CONTEXT);
 	    Bucket bucket = skv.bucket(context);
+	    bucket.newEntry(KEY1, VALUE1);
 
 	    Bucket bucket2 = bucket.newBucket(BUCKET22);
 	    bucket2.newEntry(KEY1, VALUE1);
+	    bucket2.newEntry(KEY2, VALUE2);
 
 	    Bucket bucket2Prim = bucket.bucket(BUCKET22);
 
