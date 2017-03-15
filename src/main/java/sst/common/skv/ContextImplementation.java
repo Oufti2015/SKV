@@ -1,5 +1,8 @@
 package sst.common.skv;
 
+import lombok.ToString;
+
+@ToString
 public class ContextImplementation implements Context {
     private String id;
 

@@ -53,25 +53,35 @@ public class KeyValue implements Root, SimpleKeyValue {
 	profiles.add(profile);
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
     public void load(File file) {
-	for (PersistenceProfile profile : profiles) {
-	    profile.load(file);
-	    this.maps = (Map<Context, Bucket>) profile.root().data();
-	}
-    }
-
-    @Override
-    public void save(File file) {
-	for (PersistenceProfile profile : profiles) {
-	    profile.initRoot(this);
-	    profile.save(file);
-	}
     }
 
     @Override
     public Object data() {
 	return maps;
+    }
+
+    @Override
+    public List<String> text() {
+	List<String> result = new ArrayList<>();
+	for (Context context : maps.keySet()) {
+	    System.out.println("text() : " + context);
+	    Bucket bucket = bucket(context);
+	    System.out.println("text() : " + bucket);
+	    result.addAll(bucketText(bucket, context.id() + "::"));
+	}
+	return result;
+    }
+
+    private List<String> bucketText(Bucket bucket, String bucketId) {
+	List<String> result = new ArrayList<>();
+	for (Entry entry : bucket.entries()) {
+	    System.out.println("text() : " + entry);
+	    result.add(bucketId + "/" + bucket.id() + "::" + entry.key() + "=" + entry.value());
+	}
+	for (Bucket subBucket : bucket.buckets()) {
+	    result.addAll(bucketText(subBucket, bucketId + "/" + bucket.id()));
+	}
+	return result;
     }
 }

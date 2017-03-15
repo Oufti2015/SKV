@@ -10,7 +10,8 @@ import sst.common.skv.Bucket;
 import sst.common.skv.Context;
 import sst.common.skv.KeyValue;
 import sst.common.skv.SimpleKeyValue;
-import sst.common.skv.persistence.JSonFilePersistenceProfile;
+import sst.textfile.OutputTextFile;
+import sst.textfile.OutputTextFileImpl;
 
 public class SKVTest {
 
@@ -121,9 +122,11 @@ public class SKVTest {
 	    Assert.assertNotNull(bucket2Prim.entry(KEY1));
 	    Assert.assertEquals("Value retrieved is not correct !", VALUE1, bucket2Prim.entry(KEY1).value());
 
-	    skv.addPersistenceProfile(new JSonFilePersistenceProfile());
-
-	    skv.save(tempFile);
+	    try (OutputTextFile textFile = new OutputTextFileImpl(tempFile)) {
+		textFile.serialize(skv);
+	    } catch (Exception e) {
+		e.printStackTrace();
+	    }
 
 	    System.out.println("Temp File = [" + tempFile.getAbsolutePath() + "] length = <" + tempFile.length() + ">");
 

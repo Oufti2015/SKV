@@ -1,9 +1,9 @@
 package sst.common.skv;
 
-import sst.common.skv.persistence.Persistable;
 import sst.common.skv.persistence.PersistenceProfile;
+import sst.textfile.SerializableToTextFile;
 
-public interface SimpleKeyValue extends Persistable {
+public interface SimpleKeyValue extends SerializableToTextFile {
 
     public Bucket bucket(Context context);
 

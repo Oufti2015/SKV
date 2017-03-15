@@ -1,5 +1,8 @@
 package sst.common.skv;
 
+import lombok.ToString;
+
+@ToString
 public class EntryImplementation implements Entry {
 
     private String key = null;

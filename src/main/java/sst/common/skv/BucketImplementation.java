@@ -1,8 +1,13 @@
+
 package sst.common.skv;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import lombok.ToString;
+
+@ToString
 public class BucketImplementation implements Bucket {
 
     private String id;
@@ -45,5 +50,15 @@ public class BucketImplementation implements Bucket {
     @Override
     public String id() {
 	return id;
+    }
+
+    @Override
+    public Collection<Entry> entries() {
+	return entries.values();
+    }
+
+    @Override
+    public Collection<Bucket> buckets() {
+	return buckets.values();
     }
 }
