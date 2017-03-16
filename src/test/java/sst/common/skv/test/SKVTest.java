@@ -10,6 +10,7 @@ import sst.common.skv.Bucket;
 import sst.common.skv.Context;
 import sst.common.skv.KeyValue;
 import sst.common.skv.SimpleKeyValue;
+import sst.common.skv.loader.KeyValueLoader;
 import sst.textfile.OutputTextFile;
 import sst.textfile.OutputTextFileImpl;
 
@@ -137,6 +138,10 @@ public class SKVTest {
 
 	    Assert.assertTrue(tempFile.exists());
 	    Assert.assertNotEquals(2, tempFile.length());
+
+	    SimpleKeyValue skv2 = KeyValueLoader.keyValue(tempFile);
+
+	    Assert.assertEquals(skv.text(), skv2.text());
 	} catch (IOException e) {
 	    e.printStackTrace();
 	}

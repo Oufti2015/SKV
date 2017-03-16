@@ -1,8 +1,10 @@
 package sst.common.skv;
 
+import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 @ToString
+@EqualsAndHashCode
 public class ContextImplementation implements Context {
     private String id;
 
