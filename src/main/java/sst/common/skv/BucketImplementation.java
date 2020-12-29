@@ -1,64 +1,61 @@
 
 package sst.common.skv;
 
+import lombok.ToString;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
-import lombok.ToString;
 
 @ToString
 public class BucketImplementation implements Bucket {
 
     private String id;
-    private Map<String, Bucket> buckets = new HashMap<>();
-    private Map<String, Entry> entries = new HashMap<>();
-
-    BucketImplementation() {
-    }
+    private final Map<String, Bucket> buckets = new HashMap<>();
+    private final Map<String, Entry> entries = new HashMap<>();
 
     @Override
     public Bucket bucket(String bucketId) {
-	return buckets.get(bucketId);
+        return buckets.get(bucketId);
     }
 
     @Override
     public Entry entry(String key) {
-	return entries.get(key);
+        return entries.get(key);
     }
 
     @Override
     public Bucket newBucket(String bucketId) {
-	Bucket bucket = new BucketImplementation().id(bucketId);
-	buckets.put(bucket.id(), bucket);
-	return bucket;
+        Bucket bucket = new BucketImplementation().id(bucketId);
+        buckets.put(bucket.id(), bucket);
+        return bucket;
     }
 
     @Override
     public Entry newEntry(String key, String value) {
-	Entry entry = new EntryImplementation().key(key).value(value);
-	entries.put(entry.key(), entry);
-	return entry;
+        Entry entry = new EntryImplementation().key(key).value(value);
+        entries.put(entry.key(), entry);
+        return entry;
     }
 
     @Override
     public Bucket id(String bucketId) {
-	this.id = bucketId;
-	return this;
+        this.id = bucketId;
+        return this;
     }
 
     @Override
     public String id() {
-	return id;
+        return id;
     }
 
     @Override
     public Collection<Entry> entries() {
-	return entries.values();
+        return entries.values();
     }
 
     @Override
     public Collection<Bucket> buckets() {
-	return buckets.values();
+        return buckets.values();
     }
 }

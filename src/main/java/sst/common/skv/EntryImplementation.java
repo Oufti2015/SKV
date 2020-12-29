@@ -13,23 +13,23 @@ public class EntryImplementation implements Entry {
 
     @Override
     public String key() {
-	return key;
+        return key;
     }
 
     @Override
     public String value() {
-	return value;
+        return value;
     }
 
     @Override
     public Entry key(String key) {
-	this.key = key;
-	return this;
+        this.key = key;
+        return this;
     }
 
     @Override
     public Entry value(String value) {
-	this.value = value;
-	return this;
+        this.value = value;
+        return this;
     }
 }

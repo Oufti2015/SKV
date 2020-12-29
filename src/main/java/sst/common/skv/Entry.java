@@ -2,11 +2,11 @@ package sst.common.skv;
 
 public interface Entry {
 
-    public String key();
+    String key();
 
-    public String value();
+    String value();
 
-    public Entry key(String key);
+    Entry key(String key);
 
-    public Entry value(String value);
+    Entry value(String value);
 }

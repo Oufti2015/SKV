@@ -4,9 +4,9 @@ import sst.textfile.SerializableToTextFile;
 
 public interface SimpleKeyValue extends SerializableToTextFile {
 
-    public Bucket bucket(Context context);
+    Bucket bucket(Context context);
 
-    public Bucket bucket(String context);
+    Bucket bucket(String context);
 
-    public Context context(String contextId);
+    Context context(String contextId);
 }

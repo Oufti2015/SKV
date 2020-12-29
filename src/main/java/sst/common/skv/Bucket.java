@@ -4,19 +4,19 @@ import java.util.Collection;
 
 public interface Bucket {
 
-    public Bucket id(String bucketId);
+    Bucket id(String bucketId);
 
-    public String id();
+    String id();
 
-    public Bucket bucket(String bucketId);
+    Bucket bucket(String bucketId);
 
-    public Entry entry(String key);
+    Entry entry(String key);
 
-    public Bucket newBucket(String bucketId);
+    Bucket newBucket(String bucketId);
 
-    public Entry newEntry(String key, String value);
+    Entry newEntry(String key, String value);
 
-    public Collection<Entry> entries();
+    Collection<Entry> entries();
 
-    public Collection<Bucket> buckets();
+    Collection<Bucket> buckets();
 }
